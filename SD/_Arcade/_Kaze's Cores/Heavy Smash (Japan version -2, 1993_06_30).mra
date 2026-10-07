@@ -1,0 +1,48 @@
+<misterromdescription>
+    <name>Heavy Smash (Japan version -2, 1993/06/30)</name>
+    <setname>hvysmshj</setname>
+    <parent>hvysmsh</parent>
+    <mameversion>0289</mameversion>
+    <year>1993</year>
+    <manufacturer>Data East Corporation</manufacturer>
+    <rbf>HeavySmash</rbf>
+
+    <!-- Region map (hs_download.sv):
+         index 0 main ROM   ROM_LOAD32_WORD pair (hvysmsh.cpp): the lp01-2.3j word is the
+              dword's low half (+0), lp00-2.2j the high half (+2).  A 32-bit
+              interleave, 2 bytes from each, in MAME's memory order - the same
+              form Power Spikes' gfx2 ROM_LOAD32_WORD pair uses on hardware
+              ("0021" for the +0 file, "2100" for the +2 file).  This replaces
+              the pre-built hvysmsh_flat.zip (tools/build_flat.py), whose byte
+              order it reproduces: lo b0, lo b1, hi b0, hi b1.
+         index 1 tiles      mbg-00 file order (quarter swap done live)
+         index 2 sprites    mbg-02 then mbg-01 (plane halves, live decode)
+         index 3 oki0       mbg-03
+         index 4 oki1       mbg-04 (address rotate done live) -->
+    <rom index="0" zip="hvysmshj.zip|hvysmsh.zip" md5="none">
+        <interleave output="32">
+            <part name="lp01-2.3j" crc="a6fe282a" map="0021"/>
+            <part name="lp00-2.2j" crc="3f8fd724" map="2100"/>
+        </interleave>
+    </rom>
+
+    <rom index="1" zip="hvysmshj.zip|hvysmsh.zip" md5="none">
+        <part name="mbg-00.9a" crc="7d94eb16"/>
+    </rom>
+
+    <rom index="2" zip="hvysmshj.zip|hvysmsh.zip" md5="none">
+        <part name="mbg-02.11a" crc="0cc16440"/>
+        <part name="mbg-01.10a" crc="bcd7fb29"/>
+    </rom>
+
+    <rom index="3" zip="hvysmshj.zip|hvysmsh.zip" md5="none">
+        <part name="mbg-03.10k" crc="4b809420"/>
+    </rom>
+
+    <rom index="4" zip="hvysmshj.zip|hvysmsh.zip" md5="none">
+        <part name="mbg-04.11k" crc="2281c758"/>
+    </rom>
+
+    <buttons names="Attack,Jump/Block,Spare,Start,Coin,Pause"
+             default="A,B,X,Start,Select,R" count="6"/>
+</misterromdescription>

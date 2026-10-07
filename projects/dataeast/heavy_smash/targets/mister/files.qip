@@ -1,0 +1,72 @@
+# --------------------------------------------------------------------------
+# Data East "Heavy Smash" -- source list
+#
+# Add files here, NEVER through the Quartus IDE -- it rewrites the .qsf.
+# --------------------------------------------------------------------------
+
+# ---- MiSTer board wrapper -------------------------------------------------
+set_global_assignment -name SYSTEMVERILOG_FILE HeavySmash.sv
+set_global_assignment -name SDC_FILE HeavySmash.sdc
+
+# ---- PLL (100 MHz sys + 100 MHz SDRAM 180deg; third output is a dummy
+#      load, see stadium_hero's pll notes for why it must stay) -------------
+set_global_assignment -name QIP_FILE rtl/pll.qip
+
+# ---- include search paths -------------------------------------------------
+set_global_assignment -name SEARCH_PATH ../../rtl
+set_global_assignment -name SEARCH_PATH ../../rtl/video
+set_global_assignment -name SEARCH_PATH ../../../../../third_party/cpu/gba_arm7
+set_global_assignment -name SEARCH_PATH ../../../../../third_party/audio/jt6295
+set_global_assignment -name SEARCH_PATH ../../../../../third_party/peripheral/jt9346
+set_global_assignment -name SEARCH_PATH ../../../../../platforms/mister
+
+# ---- platform transport ----------------------------------------------------
+set_global_assignment -name SYSTEMVERILOG_FILE ../../integration/hs_download.sv
+
+# ---- DE156 CPU: Amber a23 (ARMv2a, 26-bit; LGPL-2.1) -----------------------
+# The DE156 is an ARM2, not an ARM7TDMI -- docs/DEBUG_LOG.md D11.  The cache
+# and Wishbone front end are replaced by rtl/cpu/hs_a23_mem.sv, so a23_fetch /
+# a23_wishbone / a23_cache / sram_*.v are deliberately NOT listed.
+set_global_assignment -name VERILOG_FILE ../../../../../third_party/cpu/amber_a23/a23_alu.v
+set_global_assignment -name VERILOG_FILE ../../../../../third_party/cpu/amber_a23/a23_barrel_shift.v
+set_global_assignment -name VERILOG_FILE ../../../../../third_party/cpu/amber_a23/a23_multiply.v
+set_global_assignment -name VERILOG_FILE ../../../../../third_party/cpu/amber_a23/a23_register_bank.v
+set_global_assignment -name VERILOG_FILE ../../../../../third_party/cpu/amber_a23/a23_coprocessor.v
+set_global_assignment -name VERILOG_FILE ../../../../../third_party/cpu/amber_a23/a23_decode.v
+set_global_assignment -name VERILOG_FILE ../../../../../third_party/cpu/amber_a23/a23_execute.v
+set_global_assignment -name VERILOG_FILE ../../../../../third_party/cpu/amber_a23/a23_core.v
+set_global_assignment -name SEARCH_PATH ../../../../../third_party/cpu/amber_a23
+set_global_assignment -name SYSTEMVERILOG_FILE ../../rtl/cpu/hs_a23_mem.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../../rtl/cpu/hs_arm2.sv
+
+# ---- board RTL ---------------------------------------------------------------
+set_global_assignment -name SYSTEMVERILOG_FILE ../../rtl/hs_top.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../../rtl/hs_cen.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../../rtl/cpu/hs_de156.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../../rtl/cpu/hs_bus.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../../rtl/cpu/hs_romprobe.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../../rtl/video/hs_deco56.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../../rtl/video/hs_deco141.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../../rtl/video/hs_decospr.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../../rtl/video/hs_video.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../../rtl/sound/hs_snd.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../../rtl/sound/hs_snd_mix.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../../rtl/sound/hs_snd_lerp.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../../rtl/sound/hs_oki_addr.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../../rtl/memory/hs_dpram.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../../rtl/memory/hs_romarb.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../../rtl/memory/hs_sdram.sv
+
+# ---- jt6295 (GPL-3.0, (c) Jose Tejada) -- module-only search path use ------
+set_global_assignment -name SYSTEMVERILOG_FILE ../../../../../third_party/audio/jt6295/jt6295.v
+set_global_assignment -name SYSTEMVERILOG_FILE ../../../../../third_party/audio/jt6295/jt6295_acc.v
+set_global_assignment -name SYSTEMVERILOG_FILE ../../../../../third_party/audio/jt6295/jt6295_adpcm.v
+set_global_assignment -name SYSTEMVERILOG_FILE ../../../../../third_party/audio/jt6295/jt6295_ctrl.v
+set_global_assignment -name SYSTEMVERILOG_FILE ../../../../../third_party/audio/jt6295/jt6295_rom.v
+set_global_assignment -name SYSTEMVERILOG_FILE ../../../../../third_party/audio/jt6295/jt6295_serial.v
+set_global_assignment -name SYSTEMVERILOG_FILE ../../../../../third_party/audio/jt6295/jt6295_sh_rst.v
+set_global_assignment -name SYSTEMVERILOG_FILE ../../../../../third_party/audio/jt6295/jt6295_timing.v
+set_global_assignment -name VERILOG_FILE ../../../../../third_party/audio/jt6295/jt12_comb.v
+
+# ---- jt9346 (EEPROM 93C46, x16 default parameters) --------------------------
+set_global_assignment -name VERILOG_FILE ../../../../../third_party/peripheral/jt9346/jt9346.v
